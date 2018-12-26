@@ -2,9 +2,9 @@ package chart
 
 import (
 	"strings"
-	"github.com/Delveshal/compiler-LL1/first_set"
-	"github.com/Delveshal/compiler-LL1/follow_set"
-	"github.com/Delveshal/compiler-LL1/rule"
+	"../first_set"
+	"../follow_set"
+	"../rule"
 )
 
 type Chart map[byte]map[byte]string

@@ -3,9 +3,9 @@ package follow_set
 import (
 	"fmt"
 	"strings"
-	"github.com/Delveshal/compiler-LL1/rule"
-	"github.com/Delveshal/compiler-LL1/first_set"
-	"github.com/Delveshal/compiler-LL1/util"
+	"../rule"
+	"../first_set"
+	"../util"
 )
 
 type FollowSet map[byte]map[byte]struct{}

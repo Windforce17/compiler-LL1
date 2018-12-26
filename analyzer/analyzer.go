@@ -4,8 +4,8 @@ import (
 	"bytes"
 	"errors"
 	"fmt"
-	"github.com/Delveshal/compiler-LL1/chart"
-	"github.com/Delveshal/compiler-LL1/util"
+	"../chart"
+	"../util"
 )
 
 type Item struct {

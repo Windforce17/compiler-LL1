@@ -3,7 +3,7 @@ package rule
 import (
 	"fmt"
 	"strings"
-	"github.com/Delveshal/compiler-LL1/util"
+	"../util"
 )
 
 type Rules map[byte][]string

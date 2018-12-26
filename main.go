@@ -1,12 +1,12 @@
 package main
 
 import (
-	"github.com/Delveshal/compiler-LL1/analyzer"
-	"github.com/Delveshal/compiler-LL1/chart"
-	"github.com/Delveshal/compiler-LL1/first_set"
-	"github.com/Delveshal/compiler-LL1/follow_set"
-	"github.com/Delveshal/compiler-LL1/rule"
-	"github.com/Delveshal/compiler-LL1/util/feedback"
+	"./analyzer"
+	"./chart"
+	"./first_set"
+	"./follow_set"
+	"./rule"
+	"./util/feedback"
 	"io"
 	"net/http"
 	"os"
@@ -17,6 +17,8 @@ func main() {
 	mux := http.NewServeMux()
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Add("Content-type", "html")
+		w.Header().Set("Access-Control-Allow-Origin", "*")             //允许访问所有域
+		w.Header().Add("Access-Control-Allow-Headers", "Content-Type") //header的类型
 		f, err := os.Open("./static/index.html")
 		if err != nil {
 			w.WriteHeader(http.StatusInternalServerError)
@@ -26,6 +28,12 @@ func main() {
 		io.Copy(w, f)
 	})
 	mux.HandleFunc("/api/solve", func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Access-Control-Allow-Origin", "*")             //允许访问所有域
+		w.Header().Add("Access-Control-Allow-Headers", "Content-Type") //header的类型
+		w.Header().Set("content-type", "application/json")             //返回数据格式是json
+		if r.Method==http.MethodOptions{
+			w.Write([]byte("1234"))
+		}
 		fb := feedback.NewFeedBack(w)
 		err := r.ParseForm()
 		if err != nil {
@@ -54,6 +62,9 @@ func main() {
 		fb.Data(data).Response()
 	})
 	mux.HandleFunc("/api/input", func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Access-Control-Allow-Origin", "*")             //允许访问所有域
+		w.Header().Add("Access-Control-Allow-Headers", "Content-Type") //header的类型
+		w.Header().Set("content-type", "application/json")             //返回数据格式是json
 		fb := feedback.NewFeedBack(w)
 		err := r.ParseForm()
 		if err != nil {
@@ -85,5 +96,5 @@ func main() {
 		}
 		fb.Data(data).Response()
 	})
-	http.ListenAndServe(":8080", mux)
+	http.ListenAndServe(":8081", mux)
 }
