@@ -1,6 +1,7 @@
 package follow_set
 
 import (
+	"encoding/json"
 	"fmt"
 	"strings"
 	"../rule"
@@ -22,19 +23,33 @@ func (f FollowSet) String() string {
 	return build.String()
 }
 
-func (f FollowSet) Strings() []string {
-	var build strings.Builder
-	var ans []string
-	for key, value := range f {
-		build.WriteString(fmt.Sprintf("FOLLOW(%c)={ ", key))
-		for item := range value {
-			build.WriteString(fmt.Sprintf("%c ", item))
+func (f FollowSet) Strings() string {
+	//var build strings.Builder
+	//var ans []string
+	//for key, value := range f {
+	//	build.WriteString(fmt.Sprintf("FOLLOW(%c)={ ", key))
+	//	for item := range value {
+	//		build.WriteString(fmt.Sprintf("%c ", item))
+	//	}
+	//	build.WriteString("}")
+	//	ans = append(ans, build.String())
+	//	build.Reset()
+	//}
+	//return ans
+	ans:=make(map[string]string)
+	for key,value:=range f{
+		k:=fmt.Sprintf("%c",key)
+		ans[k]=""
+		for iterm:=range value{
+			v:=fmt.Sprintf("%c",iterm)
+			ans[k]+=v
 		}
-		build.WriteString("}")
-		ans = append(ans, build.String())
-		build.Reset()
 	}
-	return ans
+	r,err:=json.Marshal(ans)
+	if err!=nil{
+		fmt.Println(err)
+	}
+	return string(r)
 }
 
 func GetFollowFrom(rules rule.Rules, start byte, firstSet first_set.FirstSet) FollowSet {

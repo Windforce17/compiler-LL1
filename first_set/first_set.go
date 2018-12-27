@@ -1,9 +1,10 @@
 package first_set
 
 import (
+	"../rule"
+	"encoding/json"
 	"fmt"
 	"strings"
-	"../rule"
 )
 
 type FirstSet map[byte]map[byte]struct{}
@@ -103,19 +104,33 @@ func (f FirstSet) String() string {
 	return build.String()
 }
 
-func (f FirstSet) Strings() []string {
-	var build strings.Builder
-	var ans []string
-	for key, value := range f {
-		build.WriteString(fmt.Sprintf("FIRST(%c)={ ", key))
-		for item := range value {
-			build.WriteString(fmt.Sprintf("%c ", item))
+func (f FirstSet) Strings() string {
+	ans:=make(map[string]string)
+	for key,value:=range f{
+		k:=fmt.Sprintf("%c",key)
+		ans[k]=""
+		for iterm:=range value{
+			v:=fmt.Sprintf("%c",iterm)
+			ans[k]+=v
 		}
-		build.WriteString("}")
-		ans = append(ans, build.String())
-		build.Reset()
 	}
-	return ans
+	r,err:=json.Marshal(ans)
+	if err!=nil{
+		fmt.Println(err)
+	}
+	return string(r)
+	//var build strings.Builder
+	//var ans []string
+	//for key, value := range f {
+	//	build.WriteString(fmt.Sprintf("FIRST(%c)={ ", key))
+	//	for item := range value {
+	//		build.WriteString(fmt.Sprintf("%c ", item))
+	//	}
+	//	build.WriteString("}")
+	//	ans = append(ans, build.String())
+	//	build.Reset()
+	//}
+//return ans
 }
 
 func (f FirstSet) HaveEmpty(first byte) bool {
